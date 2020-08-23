@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "241247296803",
+    "firebase_url": "https://zerosix-ta-b5b14.firebaseio.com",
+    "project_id": "zerosix-ta-b5b14",
+    "storage_bucket": "zerosix-ta-b5b14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:241247296803:android:2bc36bd5c4dc444e20c096",
+        "android_client_info": {
+          "package_name": "com.example.zerosix_ta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "241247296803-c1samg33ia9ljr91kqbpkmjt98b2ochc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzRRoc5Puo2pXh6TV5soRa4Neo9YkgcEI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "241247296803-c1samg33ia9ljr91kqbpkmjt98b2ochc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
