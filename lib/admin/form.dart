@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_duration_picker/flutter_duration_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -115,6 +116,8 @@ class _FormState extends State<FormAdmin> {
 
     super.dispose();
   }
+
+  Duration resultingDuration;
 
   @override
   Widget build(BuildContext context) {
@@ -413,10 +416,23 @@ class _FormState extends State<FormAdmin> {
                                       height: 55,
                                       child: TextFormField(
                                         controller: eventDuration,
+                                        readOnly: true,
                                         decoration: InputDecoration(
                                             prefixIcon: Icon(Icons.timelapse),
                                             border: OutlineInputBorder(),
                                             labelText: "Event Duration"),
+                                        onTap: () async {
+                                          Duration resultingDuration =
+                                              await showDurationPicker(
+                                            context: context,
+                                            initialTime:
+                                                new Duration(minutes: 30),
+                                          );
+                                          if (resultingDuration != null) {
+                                            eventDuration.text =
+                                                resultingDuration.toString();
+                                          }
+                                        },
                                       ),
                                     ),
                                     SizedBox(height: 15),

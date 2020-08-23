@@ -98,168 +98,209 @@ class _BookedEventsState extends State<BookedEvents> {
           stream: collectionStream,
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return Text('Something went wrong');
-            }
-            if (snapshot.data == null || snapshot.data.size == 0) {
-              return Column(
-                children: [
-                  Stack(
-                    alignment: Alignment.center,
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return Center(
+                  child: Container(
+                      height: 50,
+                      width: 50,
+                      child: CircularProgressIndicator()),
+                );
+              default:
+                Widget child;
+                if (snapshot.data == null || snapshot.data.size == 0) {
+                  child = Column(
                     children: [
-                      Container(
-                          height: MediaQuery.of(context).size.height * 0.899,
-                          child: imgPlaceholder),
-                      imageBytes != null
-                          ? Center(
-                              child: Column(
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.899,
+                              child: imgPlaceholder),
+                          imageBytes != null
+                              ? Center(
+                                  child: Column(
+                                  children: [
+                                    Text(
+                                      "Book your events now!",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 32,
+                                          height: 0.9,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      "you have no booked events at the moment",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w400),
+                                    )
+                                  ],
+                                ))
+                              : Container()
+                        ],
+                      ),
+                    ],
+                  );
+                } else {
+                  double minutes = 0;
+
+                  for (int i = 0; i < snapshot.data.size; i++) {
+                    minutes += double.parse(
+                        parseDuration(snapshot.data.docs[0].data()['duration'])
+                            .inMinutes
+                            .toString());
+                  }
+                  child = Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 20, top: 40, right: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Book your events now!",
-                                  textAlign: TextAlign.center,
+                                  "My Booked Events",
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 32,
-                                      height: 0.9,
-                                      fontWeight: FontWeight.w600),
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w700),
                                 ),
                                 Text(
-                                  "you have no booked events at the moment",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w400),
-                                )
+                                  snapshot.data.size.toString(),
+                                  style: TextStyle(fontSize: 25),
+                                ),
                               ],
-                            ))
-                          : Container()
-                    ],
-                  ),
-                ],
-              );
-            }
-
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              print(snapshot.data.size);
-              return Center(
-                child: Container(
-                    height: 50, width: 50, child: CircularProgressIndicator()),
-              );
-            }
-
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 30, top: 40),
-                  child: Text(
-                    "My Booked Events",
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Flexible(
-                  child: new ListView(
-                    primary: false,
-                    children:
-                        snapshot.data.docs.map((DocumentSnapshot document) {
-                      return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                FadeRoute(
-                                    page: ViewEvent(
-                                  uid: widget.uid,
-                                  tag: "2",
-                                  storage: widget.storage,
-                                  id: document.id,
-                                  name: document.data()['event'],
-                                  description: document.data()['description'],
-                                  imageName: document.data()['image'],
-                                  image: document.data()['imageURL'],
-                                  location: document.data()['location'],
-                                  duration: document.data()['duration'],
-                                  datetime: document.data()['datetime'],
-                                )));
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Container(
-                              height: 300,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                  boxShadow: [
-                                    new BoxShadow(
-                                      color: Colors.grey,
-                                      blurRadius: 10.0,
-                                      offset: new Offset(1.0, 0),
-                                    )
-                                  ]),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
-                                    child: CachedNetworkImage(
-                                      height: 170,
-                                      width: MediaQuery.of(context).size.width,
-                                      fit: BoxFit.cover,
-                                      imageUrl: document.data()['imageURL'],
-                                      progressIndicatorBuilder:
-                                          (context, url, downloadProgress) =>
-                                              Container(
-                                        height: 170,
-                                        child: Center(
-                                          child: Container(
-                                            height: 50,
-                                            width: 50,
-                                            child: CircularProgressIndicator(
-                                                value:
-                                                    downloadProgress.progress),
+                            ),
+                            Text("Total duration: " +
+                                minutes.toStringAsFixed(0) +
+                                " minutes")
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Flexible(
+                        child: new ListView(
+                          primary: false,
+                          children: snapshot.data.docs
+                              .map((DocumentSnapshot document) {
+                            return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      FadeRoute(
+                                          page: ViewEvent(
+                                        uid: widget.uid,
+                                        tag: "2",
+                                        storage: widget.storage,
+                                        id: document.id,
+                                        name: document.data()['event'],
+                                        description:
+                                            document.data()['description'],
+                                        imageName: document.data()['image'],
+                                        image: document.data()['imageURL'],
+                                        location: document.data()['location'],
+                                        duration: document.data()['duration'],
+                                        datetime: document.data()['datetime'],
+                                      )));
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Container(
+                                    height: 300,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)),
+                                        boxShadow: [
+                                          new BoxShadow(
+                                            color: Colors.grey,
+                                            blurRadius: 10.0,
+                                            offset: new Offset(1.0, 0),
+                                          )
+                                        ]),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                          child: CachedNetworkImage(
+                                            height: 170,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            fit: BoxFit.cover,
+                                            imageUrl:
+                                                document.data()['imageURL'],
+                                            progressIndicatorBuilder: (context,
+                                                    url, downloadProgress) =>
+                                                Container(
+                                              height: 170,
+                                              child: Center(
+                                                child: Container(
+                                                  height: 50,
+                                                  width: 50,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                          value:
+                                                              downloadProgress
+                                                                  .progress),
+                                                ),
+                                              ),
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
                                           ),
                                         ),
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
+                                        Padding(
+                                          padding: const EdgeInsets.all(15.0),
+                                          child: Container(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  document.data()['event'],
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                                Text(
+                                                  document
+                                                      .data()['description'],
+                                                  maxLines: 4,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      ],
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Container(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            document.data()['event'],
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          Text(
-                                            document.data()['description'],
-                                            maxLines: 4,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ));
-                    }).toList(),
-                  ),
-                ),
-              ],
-            );
+                                ));
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+                return Container(child: child);
+            }
           },
         ),
         bottomNavigationBar: BottomNavigationBar(

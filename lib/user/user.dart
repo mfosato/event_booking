@@ -272,6 +272,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                           context,
                                           FadeRoute(
                                               page: ViewEvent(
+                                            uid: widget.uid,
                                             tag: "1",
                                             storage: widget.storage,
                                             id: document.id,
