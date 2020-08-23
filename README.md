@@ -1,6 +1,4 @@
 
-<!-- PROJECT LOGO -->
-<br />
 <p align="center">
  
   <h1 align="center">Event Booking App</h1>
@@ -25,9 +23,12 @@
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
 * [Usage](#usage)
+  * Login and Registration
+  * Administrator User
+  * Customer User
 * [Contributing](#contributing)
 * [Contact](#contact)
-* [Acknowledgements](#acknowledgements)
+
 
 
 
@@ -79,14 +80,59 @@ flutter run -d *insert name of device*
 
 This is how to use the application.
 
-### Log in
+### Log in and Registration
 
-<img src="images/Screenshot_20200824-021739.jpg">
+The application has two types of users: Administrator and Customers. 
 
+The administration logs in using the following credentials while the customers use their preferred email and password.
 
+<b>Email:</b> admin <b> Password:</b> admin
 
+ <img src="images/Screenshot_20200824-021739.jpg" width="30%">
+The customers can register using an email and password. The registration and log in of users are authenticated using the Google Platform Firebase Authentication.
+ <img src="images/Screenshot_20200824-021744.jpg" width="30%">
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+#### Administrator User
+
+An admin user can <b>view</b>, <b>add</b>, <b>update</b>, and <b>delete</b> the following parameters for an event:
+- event name
+- event description
+- event photo
+- date and time of the event
+- event duration
+- event location
+
+##### View, Update and Delete Event
+<p float="left">
+ <img src="images/Screenshot_20200824-021934.jpg" width="30%">
+ <img src="images/Screenshot_20200824-021941.jpg" width="30%">
+</p>
+
+##### Add and Update Event
+ <p float="left">
+ <img src="images/Screenshot_20200824-021934.jpg" width="30%">
+ <img src="images/Screenshot_20200824-021946.jpg" width="30%">
+</p>
+ 
+ ##### View and Replace Featured Image
+ An admin user can also view and replace featured image.
+ <img src="images/ Screenshot_20200824-021916.jpg" width="30%">
+
+ 
+ 
+ 
+ #### Customer User
+
+A customer user can view all events. They can also book and delete booked event.
+
+##### View All Events
+ <img src="images/Screenshot_20200824-021805.jpg" width="30%">
+
+##### View, Add, and Delete Booked Event
+<p float="left">
+ <img src="images/Screenshot_20200824-021827.jpg" width="30%">
+ <img src="images/Screenshot_20200824-021849.jpg" width="30%">
+</p>
 
 
 
