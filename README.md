@@ -1,4 +1,4 @@
-# zerosix_ta
+# Event Booking App
 
 A new Flutter project.
 
