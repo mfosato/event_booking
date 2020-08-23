@@ -33,7 +33,7 @@
 
 
 ### Built With
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+This event booking app is made using the following frameworks, cloud service, etc.
 * [Flutter](https://flutter.dev)
 * [Firebase Authentication](https://firebase.google.com/docs/auth)
 * [Firebase Storage](https://firebase.google.com/docs/storage)
